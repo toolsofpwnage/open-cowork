@@ -24,6 +24,10 @@ const isElectron = typeof window !== 'undefined' && window.electronAPI !== undef
 // listener, silently dropping subsequent events from main.
 let ipcListenerInstalled = false;
 
+// Same one-shot idea for the language mirror below: every useIPC() caller would
+// otherwise register its own i18next listener.
+let languageSyncInstalled = false;
+
 export function useIPC() {
   // Handle incoming server events - only setup once across all useIPC() callers.
   // See module-level `ipcListenerInstalled` guard above for the full reason.
@@ -410,6 +414,22 @@ export function useIPC() {
       ipcListenerInstalled = false;
     };
   }, []); // Empty deps - setup listener only once!
+
+  // Mirror the UI language into the main process. Messages it produces —
+  // agent/tool errors, native dialogs — are plain text by the time they reach
+  // the UI, so they have to be translated at the source.
+  useEffect(() => {
+    if (!isElectron || languageSyncInstalled) {
+      return;
+    }
+    languageSyncInstalled = true;
+
+    const pushLanguage = (language: string) => {
+      window.electronAPI.send({ type: 'settings.update', payload: { language } });
+    };
+    pushLanguage(i18n.language);
+    i18n.on('languageChanged', pushLanguage);
+  }, []);
 
   // Get actions for the rest of the hook
   const addSession = useAppStore((s) => s.addSession);

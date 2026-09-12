@@ -57,6 +57,7 @@ import {
   RESPONSE_TIMEOUT_UNLIMITED,
   normalizeResponseTimeoutMs,
 } from '../../shared/response-timeout';
+import { tMain } from '../i18n/main-i18n';
 import { normalizeOpenAICompatibleBaseUrl } from '../config/auth-utils';
 import {
   buildTerminalErrorEmissionDetails,
@@ -2958,12 +2959,7 @@ Tool routing:
           id: uuidv4(),
           sessionId: session.id,
           role: 'assistant',
-          content: [
-            {
-              type: 'text',
-              text: '**请求超时**：长时间未收到响应，操作已中止。可在「设置 → 通用 → 响应超时」调整等待时长（可设为不限时）。',
-            },
-          ],
+          content: [{ type: 'text', text: tMain('errors.promptTimeout') }],
           timestamp: Date.now(),
         };
         this.sendMessage(session.id, errorMsg);
@@ -3006,12 +3002,7 @@ Tool routing:
             id: uuidv4(),
             sessionId: session.id,
             role: 'assistant',
-            content: [
-              {
-                type: 'text',
-                text: '**请求超时**：长时间未收到响应，操作已中止。可在「设置 → 通用 → 响应超时」调整等待时长（可设为不限时）。',
-              },
-            ],
+            content: [{ type: 'text', text: tMain('errors.promptTimeout') }],
             timestamp: Date.now(),
           };
           this.sendMessage(session.id, errorMsg);

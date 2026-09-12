@@ -729,6 +729,8 @@ export interface ProviderPreset {
   models: { id: string; name: string }[];
   keyPlaceholder: string;
   keyHint: string;
+  keyPlaceholderKey?: string;
+  keyHintKey?: string;
 }
 
 export interface ProviderPresets {

@@ -14,6 +14,7 @@ import { PathResolver } from '../sandbox/path-resolver';
 import type { ToolResult, ExecutionContext, MountedPath } from '../../renderer/types';
 import { isUncPath } from '../../shared/local-file-path';
 import { isPathWithinRoot } from './path-containment';
+import { tMain } from '../i18n/main-i18n';
 
 /**
  * SandboxToolExecutor - Executes tools through the sandbox
@@ -316,7 +317,7 @@ export class SandboxToolExecutor {
         error instanceof Error &&
         (error.name === 'AbortError' || error.name === 'TimeoutError')
       ) {
-        throw new Error('请求超时，请检查网络连接后重试');
+        throw new Error(tMain('errors.requestTimeout'));
       }
       throw error;
     }
@@ -363,7 +364,7 @@ export class SandboxToolExecutor {
         error instanceof Error &&
         (error.name === 'AbortError' || error.name === 'TimeoutError')
       ) {
-        throw new Error('请求超时，请检查网络连接后重试');
+        throw new Error(tMain('errors.requestTimeout'));
       }
       throw error;
     }
