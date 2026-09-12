@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Configurable response timeout (Settings → General), with presets, a custom value, and an "Unlimited" option — local LLM servers that need longer than the previous fixed 5-minute wait no longer get their replies cut off
+
 ## [3.3.0] - 2026-04-18
 
 First stable release of the 3.3.x series. Graduated from 9 beta releases with 30+ commits since beta.9.

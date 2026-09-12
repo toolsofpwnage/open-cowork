@@ -61,6 +61,7 @@ function makeConfig(): AppConfig {
       promptIterationRounds: 2,
     },
     enableThinking: false,
+    responseTimeoutMs: 300000,
     isConfigured: true,
   };
 }

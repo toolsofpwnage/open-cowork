@@ -76,7 +76,15 @@
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeSystem": "System",
-    "language": "Language"
+    "language": "Language",
+    "responseTimeout": "Response timeout",
+    "responseTimeoutHint": "How long to wait without any response activity before a request is aborted. Raise it (or choose Unlimited) for local LLM servers that need longer to load a model or finish a reply.",
+    "responseTimeoutMinutes_one": "{{count}} minute",
+    "responseTimeoutMinutes_other": "{{count}} minutes",
+    "responseTimeoutUnlimited": "Unlimited (never time out)",
+    "responseTimeoutUnlimitedHint": "With no timeout, a stalled request keeps waiting until you stop it manually.",
+    "responseTimeoutCustom": "Custom...",
+    "responseTimeoutUnit": "minutes"
   },
   "memory": {
     "title": "Memory",

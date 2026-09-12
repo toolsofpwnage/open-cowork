@@ -57,6 +57,7 @@ const SAFE_TOP_LEVEL_KEYS = new Set<keyof AppConfig>([
   'enableThinking',
   'sandboxEnabled',
   'memoryEnabled',
+  'responseTimeoutMs',
   'theme',
   'enableDevLogs',
   'defaultWorkdir',
@@ -176,6 +177,7 @@ const WRITABLE_KEYS = new Set<keyof AppConfig>([
   'sandboxEnabled',
   'enableThinking',
   'memoryEnabled',
+  'responseTimeoutMs',
   'model',
   'contextWindow',
   'maxTokens',
@@ -256,7 +258,7 @@ function createConfigWriteTool(configStore: ConfigStore): PermissionAwareTool {
       'and any credential-bearing structure such as `profiles`, `configSets`, or `memoryRuntime`) ' +
       'can never be written and are rejected. ' +
       'Writable fields: defaultWorkdir, theme, enableDevLogs, sandboxEnabled, enableThinking, ' +
-      'memoryEnabled, model, contextWindow, maxTokens.',
+      'memoryEnabled, responseTimeoutMs, model, contextWindow, maxTokens.',
     parameters: Type.Object({
       key: Type.String({
         description:

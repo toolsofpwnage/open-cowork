@@ -76,7 +76,15 @@
     "themeLight": "浅色",
     "themeDark": "深色",
     "themeSystem": "跟随系统",
-    "language": "语言"
+    "language": "语言",
+    "responseTimeout": "响应超时",
+    "responseTimeoutHint": "请求在多长时间内没有任何响应活动就会被中止。本地大模型服务加载模型或生成回复较慢时，可调大该值或选择“不限时”。",
+    "responseTimeoutMinutes_one": "{{count}} 分钟",
+    "responseTimeoutMinutes_other": "{{count}} 分钟",
+    "responseTimeoutUnlimited": "不限时（从不超时）",
+    "responseTimeoutUnlimitedHint": "不限时后，卡住的请求会一直等待，需要手动停止。",
+    "responseTimeoutCustom": "自定义...",
+    "responseTimeoutUnit": "分钟"
   },
   "memory": {
     "title": "Memory 机制",

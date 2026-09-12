@@ -718,6 +718,8 @@ export interface AppConfig {
   memoryEnabled?: boolean;
   memoryRuntime?: MemoryRuntimeConfig;
   enableThinking?: boolean;
+  /** Inactivity window before a prompt is aborted, in ms (0 = unlimited). */
+  responseTimeoutMs?: number;
   isConfigured: boolean;
 }
 
