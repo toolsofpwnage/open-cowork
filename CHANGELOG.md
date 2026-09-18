@@ -7,13 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.4.0] - 2026-09-18
+
+Covers everything since the 3.3.1 version bump, which shipped without release notes.
+
 ### Added
 
 - Configurable response timeout (Settings → General), with presets, a custom value, and an "Unlimited" option — local LLM servers that need longer than the previous fixed 5-minute wait no longer get their replies cut off
+- `spawn_subagent` tool for in-process child sessions, with streaming progress events (#279, #280)
+- Agent Platform Phase 3: UI/UX, StdioChannel, and agent config writes (#282)
+- `config_read` tool so the agent can inspect non-sensitive app configuration (#275)
+- Plaintext config file export/import with bidirectional sync (#277)
+- Custom compaction strategy with tool output pruning, plus a manual compact trigger that surfaces its results (#276, #278)
+- `--headless` mode for running the agent without the GUI
+- MCP support for the 2026-07-28 protocol revision
 
 ### Fixed
 
 - User-facing messages produced by the main process (agent/model errors, tool request timeouts, Chrome/Node.js startup failures, the startup error dialog) and the API key hints in Settings are now translated instead of always appearing in Chinese
+- Feishu remote control: encrypted webhook payloads are decrypted, webhooks are verified with the encryptKey SHA256, a verification token is required in webhook mode, and session id mappings survive across turns (#291)
+- Ollama: fail fast on terminal stream errors instead of hanging (#234)
+- MCP: OAuth support for streamable HTTP transports (#235)
+- Gemini: preserve the SDK module boundary when bundled into Electron
+- Chat: per-session scroll position is preserved, right-to-left messages pick up the correct direction, and the inline `<think>` tag parser was removed in favour of frontend escaping
+- Config: `contextWindow` / `maxTokens` are projected onto the flat app config correctly
+- Windows: upgraded Electron for dev setup
+
+### Changed
+
+- Renamed legacy "claude" naming to the canonical Open Cowork names
+- Chat scroll position persistence is throttled
 
 ## [3.3.0] - 2026-04-18
 
