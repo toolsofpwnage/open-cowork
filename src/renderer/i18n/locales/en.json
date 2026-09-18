@@ -76,7 +76,15 @@
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeSystem": "System",
-    "language": "Language"
+    "language": "Language",
+    "responseTimeout": "Response timeout",
+    "responseTimeoutHint": "How long to wait without any response activity before a request is aborted. Raise it (or choose Unlimited) for local LLM servers that need longer to load a model or finish a reply.",
+    "responseTimeoutMinutes_one": "{{count}} minute",
+    "responseTimeoutMinutes_other": "{{count}} minutes",
+    "responseTimeoutUnlimited": "Unlimited (never time out)",
+    "responseTimeoutUnlimitedHint": "With no timeout, a stalled request keeps waiting until you stop it manually.",
+    "responseTimeoutCustom": "Custom...",
+    "responseTimeoutUnit": "minutes"
   },
   "memory": {
     "title": "Memory",
@@ -343,7 +351,14 @@
         "ollama_model_loading": "Model {{model}} may still be loading. Try the deep check again in a moment.",
         "model_cold_start": "The model may still be loading into GPU/CPU memory. Large models (7B+) can take 30–120 seconds on first use. Try again shortly."
       }
-    }
+    },
+    "keyHintOpenrouter": "Get one from openrouter.ai/keys",
+    "keyHintAnthropic": "Get one from console.anthropic.com",
+    "keyHintOpenai": "Get one from platform.openai.com",
+    "keyHintGemini": "Get one from aistudio.google.com",
+    "keyHintOllama": "Most Ollama setups need no key; fill one in only if your proxy layer requires authentication.",
+    "keyHintCustom": "Enter your API key",
+    "keyPlaceholderOptional": "Can be left empty"
   },
   "window": {
     "minimize": "Minimize",
@@ -941,5 +956,22 @@
     "completed": "Completed",
     "inDuration": "in {{duration}}",
     "showResult": "Show result"
+  },
+  "errors": {
+    "modelResponseTimeout": "The model response timed out: nothing came back from the upstream service. Try again later, or check the load on the current model/gateway.",
+    "emptyResponse": "The model returned an empty successful result. The current model or gateway may not be fully compatible — try again, or switch protocol and retry.",
+    "badRequest": "The upstream service rejected the request (400). The model or protocol configuration may be incompatible. Check the model name, protocol settings and API endpoint.\nOriginal error: {{details}}",
+    "authFailed": "Authentication failed. Check that the API key is correct, has not expired, and has access to the current model.\nOriginal error: {{details}}",
+    "rateLimited": "The request was rate limited (429). The current model or API endpoint has reached its request limit — try again later.\nOriginal error: {{details}}",
+    "upstreamError": "The upstream service failed, possibly because the model service is overloaded or temporarily down. The SDK will retry automatically.\nOriginal error: {{details}}",
+    "networkInterrupted": "The network connection was interrupted ({{details}}). The proxy or gateway may be unstable. The SDK will retry automatically.",
+    "checkConfigHint": "_Check your configuration and try again._",
+    "autoRetryHint": "_The agent is retrying automatically, please wait..._",
+    "promptTimeout": "**Request timed out**: no response for a long time, so the operation was aborted. You can change how long to wait under Settings → General → Response timeout (it can be set to unlimited).",
+    "requestTimeout": "The request timed out. Check your network connection and try again.",
+    "bundledNodeMissing": "Bundled Node.js not found. Please reinstall the application.\n\nThe application requires bundled Node.js to run MCP servers.",
+    "chromeNotReady": "Chrome is not ready, this operation cannot run: {{details}}",
+    "startupFailedTitle": "Open Cowork failed to start",
+    "startupFailedDetails": "{{message}}\n\nCheck the logs for more information."
   }
 }

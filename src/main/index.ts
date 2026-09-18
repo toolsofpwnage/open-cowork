@@ -81,6 +81,7 @@ import {
   decodePathSafely,
 } from '../shared/local-file-path';
 import { eventRequiresSessionManager } from './client-event-utils';
+import { setMainLanguage, tMain } from './i18n/main-i18n';
 import { getUnsupportedWorkspacePathReason } from './workspace-path-constraints';
 import {
   log,
@@ -865,6 +866,11 @@ function sendToRenderer(event: ServerEvent) {
 app
   .whenReady()
   .then(async () => {
+    // Best-effort language for messages produced before the renderer reports
+    // its own (startup failures, early agent errors). The renderer overrides
+    // this over IPC as soon as it loads.
+    setMainLanguage(app.getLocale());
+
     // Smoke test mode: verify the app can start, then exit cleanly
     if (process.argv.includes('--smoke-test')) {
       log('[SmokeTest] App launched successfully in smoke test mode');
@@ -1499,7 +1505,10 @@ app
   .catch((error) => {
     logError('[App] Startup failed:', error);
     const message = error instanceof Error ? error.message : 'Unknown startup error';
-    dialog.showErrorBox('Open Cowork 启动失败', `${message}\n\n请查看日志获取更多信息。`);
+    dialog.showErrorBox(
+      tMain('errors.startupFailedTitle'),
+      tMain('errors.startupFailedDetails', { message })
+    );
     app.quit();
   });
 
@@ -3300,7 +3309,14 @@ async function handleClientEvent(event: ClientEvent): Promise<unknown> {
       return { success: false, path: '', error: 'User cancelled' };
     }
 
-    case 'settings.update':
+    case 'settings.update': {
+      const requestedLanguage = event.payload.language;
+      if (typeof requestedLanguage === 'string') {
+        // The renderer owns the language (i18next + its detector); mirror it so
+        // main-process messages come out in the same one.
+        setMainLanguage(requestedLanguage);
+      }
+
       if (
         event.payload.theme === 'dark' ||
         event.payload.theme === 'light' ||
@@ -3328,6 +3344,7 @@ async function handleClientEvent(event: ClientEvent): Promise<unknown> {
         );
       }
       return null;
+    }
 
     default:
       logWarn('Unknown event type:', event);

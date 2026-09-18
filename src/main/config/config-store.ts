@@ -32,6 +32,10 @@ import {
   shouldUseAnthropicAuthToken,
 } from './auth-utils';
 import { API_PROVIDER_PRESETS, PI_AI_CURATED_PRESETS } from '../../shared/api-model-presets';
+import {
+  DEFAULT_RESPONSE_TIMEOUT_MS,
+  normalizeResponseTimeoutMs,
+} from '../../shared/response-timeout';
 
 /**
  * Application configuration schema
@@ -126,6 +130,9 @@ export interface AppConfig {
   // Enable thinking mode (show thinking steps)
   enableThinking: boolean;
 
+  // How long to wait for model activity before aborting a prompt (0 = unlimited)
+  responseTimeoutMs: number;
+
   // First run flag
   isConfigured: boolean;
 }
@@ -172,6 +179,7 @@ const DIRECT_READ_KEYS = new Set<keyof AppConfig>([
   'sandboxEnabled',
   'memoryEnabled',
   'enableThinking',
+  'responseTimeoutMs',
   'isConfigured',
 ]);
 
@@ -187,6 +195,7 @@ export const EXPORTABLE_FIELDS: (keyof AppConfig)[] = [
   'sandboxEnabled',
   'enableThinking',
   'memoryEnabled',
+  'responseTimeoutMs',
   'model',
   'provider',
   'contextWindow',
@@ -230,6 +239,7 @@ export const FIELD_VALIDATORS: Record<string, (v: unknown) => boolean> = {
   sandboxEnabled: (v) => typeof v === 'boolean',
   enableThinking: (v) => typeof v === 'boolean',
   memoryEnabled: (v) => typeof v === 'boolean',
+  responseTimeoutMs: (v) => typeof v === 'number' && Number.isFinite(v) && v >= 0,
   model: (v) => typeof v === 'string',
   provider: (v) =>
     typeof v === 'string' &&
@@ -340,6 +350,7 @@ const defaultConfig: AppConfig = {
     promptIterationRounds: 2,
   },
   enableThinking: false,
+  responseTimeoutMs: DEFAULT_RESPONSE_TIMEOUT_MS,
   isConfigured: false,
 };
 
@@ -1039,6 +1050,10 @@ export class ConfigStore {
       memoryEnabled: toBoolean(raw.memoryEnabled, defaultConfig.memoryEnabled),
       memoryRuntime: normalizeMemoryRuntimeConfig(raw.memoryRuntime),
       enableThinking: projected.enableThinking,
+      responseTimeoutMs: normalizeResponseTimeoutMs(
+        raw.responseTimeoutMs,
+        defaultConfig.responseTimeoutMs
+      ),
       isConfigured: toBoolean(raw.isConfigured, defaultConfig.isConfigured),
     };
     assignOptionalPositiveNumber(result, 'contextWindow', projected.contextWindow);
@@ -1178,6 +1193,9 @@ export class ConfigStore {
           return defaultConfig[key];
         }
         if (key === 'theme' && !isAppTheme(rawValue)) {
+          return defaultConfig[key];
+        }
+        if (key === 'responseTimeoutMs' && typeof rawValue !== 'number') {
           return defaultConfig[key];
         }
         if (
@@ -1463,6 +1481,10 @@ export class ConfigStore {
         updates.memoryRuntime !== undefined
           ? normalizeMemoryRuntimeConfig(updates.memoryRuntime)
           : current.memoryRuntime,
+      responseTimeoutMs:
+        updates.responseTimeoutMs !== undefined
+          ? normalizeResponseTimeoutMs(updates.responseTimeoutMs, current.responseTimeoutMs)
+          : current.responseTimeoutMs,
       isConfigured:
         updates.isConfigured !== undefined ? updates.isConfigured : current.isConfigured,
     });

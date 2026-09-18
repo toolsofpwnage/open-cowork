@@ -14,6 +14,7 @@ import { useApiConfigState } from '../../hooks/useApiConfigState';
 import { ApiConfigSetManager } from '../ApiConfigSetManager';
 import { CommonProviderSetupsCard, GuidanceInlineHint } from '../ProviderGuidance';
 import ApiDiagnosticsPanel from '../ApiDiagnosticsPanel';
+import { providerKeyHint, providerKeyPlaceholder } from '../../utils/provider-preset-text';
 
 interface ModelOptionItem {
   id: string;
@@ -162,11 +163,11 @@ export function SettingsAPI() {
           type="password"
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
-          placeholder={currentPreset?.keyPlaceholder || t('api.enterApiKey')}
+          placeholder={providerKeyPlaceholder(currentPreset, t, t('api.enterApiKey'))}
           className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
         />
         {currentPreset?.keyHint && (
-          <p className="text-xs text-text-muted">{currentPreset.keyHint}</p>
+          <p className="text-xs text-text-muted">{providerKeyHint(currentPreset, t)}</p>
         )}
       </div>
 

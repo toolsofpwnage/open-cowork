@@ -14,6 +14,12 @@ export interface SharedProviderPreset {
   models: Array<{ id: string; name: string }>;
   keyPlaceholder: string;
   keyHint: string;
+  /**
+   * Translation keys for the two fields above. The UI prefers these and falls
+   * back to the literal English text when a key is missing.
+   */
+  keyPlaceholderKey?: string;
+  keyHintKey?: string;
 }
 
 export interface SharedProviderPresets {
@@ -45,7 +51,8 @@ export const API_PROVIDER_PRESETS: SharedProviderPresets = {
       { id: 'google/gemini-2.5-flash', name: 'google/gemini-2.5-flash' },
     ],
     keyPlaceholder: 'sk-or-v1-...',
-    keyHint: '从 openrouter.ai/keys 获取',
+    keyHint: 'Get one from openrouter.ai/keys',
+    keyHintKey: 'api.keyHintOpenrouter',
   },
   anthropic: {
     name: 'Anthropic',
@@ -58,7 +65,8 @@ export const API_PROVIDER_PRESETS: SharedProviderPresets = {
       { id: 'claude-3-7-sonnet-latest', name: 'claude-3-7-sonnet-latest' },
     ],
     keyPlaceholder: 'sk-ant-...',
-    keyHint: '从 console.anthropic.com 获取',
+    keyHint: 'Get one from console.anthropic.com',
+    keyHintKey: 'api.keyHintAnthropic',
   },
   openai: {
     name: 'OpenAI',
@@ -73,7 +81,8 @@ export const API_PROVIDER_PRESETS: SharedProviderPresets = {
       { id: 'o4-mini', name: 'o4-mini' },
     ],
     keyPlaceholder: 'sk-...',
-    keyHint: '从 platform.openai.com 获取',
+    keyHint: 'Get one from platform.openai.com',
+    keyHintKey: 'api.keyHintOpenai',
   },
   gemini: {
     name: 'Gemini',
@@ -87,7 +96,8 @@ export const API_PROVIDER_PRESETS: SharedProviderPresets = {
       { id: 'gemini-2.5-flash-lite', name: 'gemini-2.5-flash-lite' },
     ],
     keyPlaceholder: 'AIza...',
-    keyHint: '从 aistudio.google.com 获取',
+    keyHint: 'Get one from aistudio.google.com',
+    keyHintKey: 'api.keyHintGemini',
   },
   ollama: {
     name: 'Ollama',
@@ -97,8 +107,11 @@ export const API_PROVIDER_PRESETS: SharedProviderPresets = {
       { id: 'llama3.2:latest', name: 'llama3.2:latest' },
       { id: 'deepseek-r1:latest', name: 'deepseek-r1:latest' },
     ],
-    keyPlaceholder: '可留空',
-    keyHint: '多数 Ollama 部署可留空；如果你的代理层要求鉴权，也可以填写 Key',
+    keyPlaceholder: 'Can be left empty',
+    keyPlaceholderKey: 'api.keyPlaceholderOptional',
+    keyHint:
+      'Most Ollama setups need no key; fill one in only if your proxy layer requires authentication.',
+    keyHintKey: 'api.keyHintOllama',
   },
   custom: {
     name: '更多模型',
@@ -115,7 +128,8 @@ export const API_PROVIDER_PRESETS: SharedProviderPresets = {
       { id: 'mistral-large-latest', name: 'mistral-large-latest' },
     ],
     keyPlaceholder: 'sk-xxx',
-    keyHint: '输入你的 API Key',
+    keyHint: 'Enter your API key',
+    keyHintKey: 'api.keyHintCustom',
   },
 };
 

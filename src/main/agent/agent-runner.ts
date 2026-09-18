@@ -53,6 +53,11 @@ import { PluginRuntimeService } from '../skills/plugin-runtime-service';
 import type { SkillsAdapter } from '../skills/skills-adapter';
 import { AgentRuntimeExtensionManager } from '../extensions/agent-runtime-extension-manager';
 import { configStore } from '../config/config-store';
+import {
+  RESPONSE_TIMEOUT_UNLIMITED,
+  normalizeResponseTimeoutMs,
+} from '../../shared/response-timeout';
+import { tMain } from '../i18n/main-i18n';
 import { normalizeOpenAICompatibleBaseUrl } from '../config/auth-utils';
 import {
   buildTerminalErrorEmissionDetails,
@@ -2460,16 +2465,26 @@ Tool routing:
         }
       };
 
-      // Activity-based timeout: reset the 5-min timer whenever the SDK sends events
-      const PROMPT_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
+      // Activity-based timeout: reset the timer whenever the SDK sends events.
+      // Configurable via Settings because local model servers can stay silent
+      // for a long time while loading or generating; 0 disables it entirely.
+      const promptTimeoutMs = normalizeResponseTimeoutMs(configStore.get('responseTimeoutMs'));
       let activityTimeoutId: ReturnType<typeof setTimeout> | undefined;
       const resetActivityTimeout = () => {
         if (activityTimeoutId) clearTimeout(activityTimeoutId);
+        if (promptTimeoutMs === RESPONSE_TIMEOUT_UNLIMITED) {
+          activityTimeoutId = undefined;
+          return;
+        }
         activityTimeoutId = setTimeout(() => {
-          logWarn('[CoworkAgentRunner] Prompt timed out (no activity for 5 min), aborting');
+          logWarn(
+            `[CoworkAgentRunner] Prompt timed out (no activity for ${Math.round(
+              promptTimeoutMs / 1000
+            )}s), aborting`
+          );
           abortedByTimeout = true;
           controller.abort();
-        }, PROMPT_TIMEOUT_MS);
+        }, promptTimeoutMs);
       };
 
       const recordStreamEvent = (eventType: string) => {
@@ -2923,7 +2938,7 @@ Tool routing:
           id: uuidv4(),
           sessionId: session.id,
           role: 'assistant',
-          content: [{ type: 'text', text: '**请求超时**：长时间未收到响应，操作已中止。' }],
+          content: [{ type: 'text', text: tMain('errors.promptTimeout') }],
           timestamp: Date.now(),
         };
         this.sendMessage(session.id, errorMsg);
@@ -2966,7 +2981,7 @@ Tool routing:
             id: uuidv4(),
             sessionId: session.id,
             role: 'assistant',
-            content: [{ type: 'text', text: '**请求超时**：长时间未收到响应，操作已中止。' }],
+            content: [{ type: 'text', text: tMain('errors.promptTimeout') }],
             timestamp: Date.now(),
           };
           this.sendMessage(session.id, errorMsg);

@@ -76,7 +76,15 @@
     "themeLight": "浅色",
     "themeDark": "深色",
     "themeSystem": "跟随系统",
-    "language": "语言"
+    "language": "语言",
+    "responseTimeout": "响应超时",
+    "responseTimeoutHint": "请求在多长时间内没有任何响应活动就会被中止。本地大模型服务加载模型或生成回复较慢时，可调大该值或选择“不限时”。",
+    "responseTimeoutMinutes_one": "{{count}} 分钟",
+    "responseTimeoutMinutes_other": "{{count}} 分钟",
+    "responseTimeoutUnlimited": "不限时（从不超时）",
+    "responseTimeoutUnlimitedHint": "不限时后，卡住的请求会一直等待，需要手动停止。",
+    "responseTimeoutCustom": "自定义...",
+    "responseTimeoutUnit": "分钟"
   },
   "memory": {
     "title": "Memory 机制",
@@ -343,7 +351,14 @@
         "ollama_model_loading": "模型 {{model}} 可能仍在加载中，稍后再试深度验证。",
         "model_cold_start": "模型可能仍在加载到 GPU/CPU 内存中。大型模型（7B+）首次使用可能需要 30–120 秒，请稍后重试。"
       }
-    }
+    },
+    "keyHintOpenrouter": "从 openrouter.ai/keys 获取",
+    "keyHintAnthropic": "从 console.anthropic.com 获取",
+    "keyHintOpenai": "从 platform.openai.com 获取",
+    "keyHintGemini": "从 aistudio.google.com 获取",
+    "keyHintOllama": "多数 Ollama 部署可留空；如果你的代理层要求鉴权，也可以填写 Key",
+    "keyHintCustom": "输入你的 API Key",
+    "keyPlaceholderOptional": "可留空"
   },
   "window": {
     "minimize": "最小化",
@@ -941,5 +956,22 @@
     "completed": "已完成",
     "inDuration": "耗时 {{duration}}",
     "showResult": "查看结果"
+  },
+  "errors": {
+    "modelResponseTimeout": "模型响应超时：长时间未收到上游返回，请稍后重试或检查当前模型/网关负载。",
+    "emptyResponse": "模型返回了一个空的成功结果，当前模型或网关兼容性可能有问题，请重试或切换协议后再试。",
+    "badRequest": "请求被上游拒绝（400），可能是模型/协议配置不兼容。请检查模型名称、协议设置和 API 端点。\n原始错误: {{details}}",
+    "authFailed": "认证失败，请检查 API Key 是否正确、是否已过期或无权访问当前模型。\n原始错误: {{details}}",
+    "rateLimited": "请求被限流（429），当前模型或 API 端点的调用频率已达上限，请稍后重试。\n原始错误: {{details}}",
+    "upstreamError": "上游服务异常，可能是模型服务过载或临时故障，SDK 将自动重试。\n原始错误: {{details}}",
+    "networkInterrupted": "网络连接中断（{{details}}），可能是代理/网关不稳定，SDK 将自动重试。",
+    "checkConfigHint": "_请检查配置后重试。_",
+    "autoRetryHint": "_Agent 正在自动重试，请稍候..._",
+    "promptTimeout": "**请求超时**：长时间未收到响应，操作已中止。可在「设置 → 通用 → 响应超时」调整等待时长（可设为不限时）。",
+    "requestTimeout": "请求超时，请检查网络连接后重试",
+    "bundledNodeMissing": "未找到内置的 Node.js。请重新安装应用。\n\n应用需要内置的 Node.js 来运行 MCP 服务器。",
+    "chromeNotReady": "Chrome 浏览器未就绪，无法执行此操作: {{details}}",
+    "startupFailedTitle": "Open Cowork 启动失败",
+    "startupFailedDetails": "{{message}}\n\n请查看日志获取更多信息。"
   }
 }
